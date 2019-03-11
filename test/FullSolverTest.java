@@ -24,19 +24,63 @@ public class FullSolverTest {
         Executor executor = new Executor();
         Vertex root = executor.run();
 
+        double[] expected = expectedSolution(12);
         double[] solution = extractSolution(collectLeaves(root));
-
-        int n = 12;
-        double h = 1. / n;
-        double[] expected = new double[n + 1];
-        for (int i = 0; i <= n; ++i) {
-            expected[i] = i * h;
-        }
 
         String msg = "Incorrect solution\n" +
                 "Expected: " + PrettyPrint.print(expected) + "\n" +
                 "Actual  : " + PrettyPrint.print(solution) + "\n";
         assertArrayEquals(msg, expected, solution, ProductionTest.EPS);
+    }
+
+    @Test
+    public void buildingUniformTreeWorks() {
+        testBuilding(2);
+        testBuilding(3);
+        testBuilding(4);
+    }
+
+    @Test
+    public void solvingUniformTreeWorks() {
+        testSolving(2);
+        testSolving(3);
+        testSolving(4);
+    }
+
+    private void testBuilding(int levels) {
+        Executor executor = new Executor();
+        Vertex root = executor.run(levels);
+
+        int elements = (int) Math.round(Math.pow(2, levels - 1));
+        double[] expected = expectedSolution(elements);
+        double[] solution = extractSolution(collectLeaves(root));
+
+        String msg = "Incorrect solution for " + levels + "levels\n" +
+                "Expected: " + PrettyPrint.print(expected) + "\n" +
+                "Actual  : " + PrettyPrint.print(solution) + "\n";
+        assertArrayEquals(msg, expected, solution, ProductionTest.EPS);
+    }
+
+    private void testSolving(int levels) {
+        Executor executor = new Executor();
+        Vertex root = executor.run(levels);
+
+        String tree = PrettyPrint.printTreeStructure(root);
+        String msg = "Invalid tree for " + levels + " levels:\n" + tree;
+
+        assertEquals(msg, root.m_label, "root");
+        checkSubtree(msg, root.m_left, levels - 2);
+        checkSubtree(msg, root.m_right, levels - 2);
+    }
+
+
+    private double[] expectedSolution(int elements) {
+        double h = 1. / elements;
+        double[] expected = new double[elements + 1];
+        for (int i = 0; i <= elements; ++i) {
+            expected[i] = i * h;
+        }
+        return expected;
     }
 
     private void checkSubtree(String msg, Vertex node, int depth) {
