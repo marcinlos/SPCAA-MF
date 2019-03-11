@@ -47,7 +47,7 @@ public class FullSolverTest {
         testSolving(4);
     }
 
-    private void testBuilding(int levels) {
+    private void testSolving(int levels) {
         Executor executor = new Executor();
         Vertex root = executor.run(levels);
 
@@ -61,7 +61,7 @@ public class FullSolverTest {
         assertArrayEquals(msg, expected, solution, ProductionTest.EPS);
     }
 
-    private void testSolving(int levels) {
+    private void testBuilding(int levels) {
         Executor executor = new Executor();
         Vertex root = executor.run(levels);
 
