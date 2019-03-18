@@ -24,7 +24,7 @@ public class FullSolverTest {
         Executor executor = new Executor();
         Vertex root = executor.run();
 
-        double[] expected = expectedSolution(12);
+        double[] expected = expectedSolution(6);
         double[] solution = extractSolution(collectLeaves(root));
 
         String msg = "Incorrect solution\n" +
@@ -95,18 +95,19 @@ public class FullSolverTest {
 
     private List<Vertex> collectLeaves(Vertex root) {
         List<Vertex> leaves = new ArrayList<>();
-        Queue<Vertex> nodes = new ArrayDeque<>();
-        nodes.add(root);
+        Deque<Vertex> nodes = new ArrayDeque<>();
+        nodes.push(root);
 
         while (!nodes.isEmpty()) {
-            Vertex v = nodes.remove();
-            if (v.m_label.equals("node")) {
+            Vertex v = nodes.pop();
+            if (v.m_left.m_label.equals("node")) {
                 leaves.add(v);
             } else {
-                nodes.add(v.m_left);
                 nodes.add(v.m_right);
+                nodes.add(v.m_left);
             }
         }
+        Collections.reverse(leaves);
         return leaves;
     }
 
