@@ -14,9 +14,13 @@ public abstract class ProductionTest {
         barrier = new CyclicBarrier(count);
     }
 
+    public static boolean close(double a, double b) {
+        return abs(a - b) < EPS;
+    }
+
     public static void assertVectorEquals(double[] expected, double[] actual) {
         for (int i = 0; i < 3; ++i) {
-            if (abs(expected[i] - actual[i]) >= EPS) {
+            if (! close(expected[i], actual[i])) {
                 Assert.fail("Vectors differ at [" + i + "]\n" +
                         "Expected: " + PrettyPrint.print(expected) + "\n" +
                         "Actual  : " + PrettyPrint.print(actual));
@@ -27,7 +31,7 @@ public abstract class ProductionTest {
     public static void assertMatrixEquals(double[][] expected, double[][] actual) {
         for (int i = 0; i < 3; ++i) {
             for (int j = 0; j < 3; ++j) {
-                if (abs(expected[i][j] - actual[i][j]) >= EPS) {
+                if (! close(expected[i][j], actual[i][j])) {
                     Assert.fail("Matrices differ at [" + i + "][" + j + "]\n" +
                             "Expected:\n" + PrettyPrint.print(expected) +
                             "Actual:\n" + PrettyPrint.print(actual));
