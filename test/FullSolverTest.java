@@ -69,8 +69,8 @@ public class FullSolverTest {
         String msg = "Invalid tree for " + levels + " levels:\n" + tree;
 
         assertEquals(msg, root.m_label, "root");
-        checkSubtree(msg, root.m_left, levels - 2);
-        checkSubtree(msg, root.m_right, levels - 2);
+        checkSubtree(msg, root.m_left, levels - 1);
+        checkSubtree(msg, root.m_right, levels - 1);
     }
 
 
